@@ -74,19 +74,23 @@ void loop() {
 
 
 void goForward() {
+ /*
  Roomba.write(137);   // DRIVE
  Roomba.write((byte)0x00);   // 0x00c8 == 200
  Roomba.write(0xc8);
  Roomba.write(0x80);
  Roomba.write((byte)0x00);
+ */
+driveWheels(200,200);
 }
 
 void goBackward() {
- Roomba.write(137);   // DRIVE
+ /*Roomba.write(137);   // DRIVE
  Roomba.write(0xff);   // 0xff38 == -200
  Roomba.write(0x38);
  Roomba.write(0x80);
- Roomba.write((byte)0x00);
+ Roomba.write((byte)0x00); */
+ driveWheels(-200,-200);
 }
 
 void halt(){
@@ -99,11 +103,11 @@ Roomba.write(j);
 }
 
 void turnLeft() {
-  driveWheels(200,0);
+  driveWheels(200,-200);
 }
 
 void turnRight() {
-  driveWheels(0,200);
+  driveWheels(-200,200);
 }
 
 
@@ -113,8 +117,8 @@ void driveWheels(int right, int left) {
   clamp(left, -500, 500);
   
   Roomba.write(145);
-  Roomba.write(right >> 8);
-  Roomba.write(right);
+  Roomba.write(right >> 8); //high byte
+  Roomba.write(right); //low byte
   Roomba.write(left >> 8);
   Roomba.write(left);
 }
