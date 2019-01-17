@@ -7,8 +7,10 @@
 int rxPin = 10;
 int txPin = 11;
 
+int speed = 400;
+
 //bluetooth input
-int data;
+char data;
 
 //Roomba object
 SoftwareSerial Roomba(rxPin,txPin);
@@ -17,8 +19,9 @@ SoftwareSerial Roomba(rxPin,txPin);
 void setup() {
 
  //115200 BAUD RATE
- Serial.begin(115200);
+ Serial.begin(9600);
  Roomba.begin(115200);  
+ Serial.println("Bluetooth ready");
  delay (1000);
 
  Roomba.write(128);  // START
@@ -29,6 +32,8 @@ void setup() {
  Serial.println("\n");
  delay (2000);
  // -- playsound? -- //
+ setTheLick();
+ setSongOne();
 
 }
 
@@ -41,30 +46,40 @@ void loop() {
     //if input, set data to input.
     while(Serial.available()>0) {
         data = Serial.read();
+        Serial.println(data);
     }
     
     //decide what to do with data.
-    if(data == ) {
+    if(data == 'w') {
         goForward();
     }
-    if(data == ) {
+    if(data == 's') {
         goBackward();
     }
-    if(data == ) {
+    if(data == 'a') {
         turnLeft();
     }
-    if(data == ) {
+    if(data == 'd') {
         turnRight();
     }
-    if(data == ) {
+    if(data == ' ') {
         halt();
     }
-    if(data == ) {
-        playCMajor();
+    if(data == 'x') {
+        clean();
     }
-    if(data == ) {
-        playTheLick();
+    if(data == 'v') {
+      fullMode();
     }
+    if(data == 't') {
+      playCMajor();
+    }
+    if(data == 'q') {
+      playTheLick();
+    }
+    
+    data=0;
+    
 }
 
 
@@ -81,7 +96,7 @@ void goForward() {
  Roomba.write(0x80);
  Roomba.write((byte)0x00);
  */
-driveWheels(200,200);
+driveWheels(speed,speed);
 }
 
 void goBackward() {
@@ -90,7 +105,7 @@ void goBackward() {
  Roomba.write(0x38);
  Roomba.write(0x80);
  Roomba.write((byte)0x00); */
- driveWheels(-200,-200);
+ driveWheels(-speed,-speed);
 }
 
 void halt(){
@@ -103,11 +118,11 @@ Roomba.write(j);
 }
 
 void turnLeft() {
-  driveWheels(200,-200);
+  driveWheels(speed,-speed);
 }
 
 void turnRight() {
-  driveWheels(-200,200);
+  driveWheels(-speed,speed);
 }
 
 
@@ -183,3 +198,15 @@ void playTheLick() {
     Roomba.write(141);
     Roomba.write(2);
 }
+
+
+
+void clean() {
+  Roomba.write(135);
+  Serial.println("Cleaning opcode sent");
+}
+
+void fullMode() {
+  Roomba.write(131);
+}
+
