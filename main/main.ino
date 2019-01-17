@@ -34,6 +34,7 @@ void setup() {
  // -- playsound? -- //
  setTheLick();
  setSongOne();
+ setMeglovania();
 
 }
 
@@ -72,7 +73,7 @@ void loop() {
       fullMode();
     }
     if(data == 't') {
-      playCMajor();
+      playMeglovania();
     }
     if(data == 'q') {
       playTheLick();
@@ -187,6 +188,98 @@ void setTheLick() {
     Roomba.write(10);
 }
 
+void setMeglovania() {
+    Roomba.write(140);
+    Roomba.write(3);
+    Roomba.write(40);
+
+    //62 62 74 69 68 67 65 62 65 67
+    Roomba.write(62);
+    Roomba.write(8);
+    Roomba.write(62);
+    Roomba.write(8);
+    Roomba.write(74);
+    Roomba.write(16);
+    Roomba.write(69)
+    Roomba.write(24);
+    Roomba.write(68);
+    Roomba.write(16);
+    Roomba.write(67);
+    Roomba.write(16);
+    Roomba.write(65);
+    Roomba.write(16);
+    Roomba.write(62);
+    Roomba.write(8);
+    Roomba.write(65);
+    Roomba.write(8);
+    Roomba.write(67);
+    Roomba.write(8);
+
+    Roomba.write(60);
+    Roomba.write(8);
+    Roomba.write(60);
+    Roomba.write(8);
+    Roomba.write(74);
+    Roomba.write(16);
+    Roomba.write(69)
+    Roomba.write(24);
+    Roomba.write(68);
+    Roomba.write(16);
+    Roomba.write(67);
+    Roomba.write(16);
+    Roomba.write(65);
+    Roomba.write(16);
+    Roomba.write(62);
+    Roomba.write(8);
+    Roomba.write(65);
+    Roomba.write(8);
+    Roomba.write(67);
+    Roomba.write(8);
+
+    Roomba.write(59);
+    Roomba.write(8);
+    Roomba.write(59);
+    Roomba.write(8);
+    Roomba.write(74);
+    Roomba.write(16);
+    Roomba.write(69)
+    Roomba.write(24);
+    Roomba.write(68);
+    Roomba.write(16);
+    Roomba.write(67);
+    Roomba.write(16);
+    Roomba.write(65);
+    Roomba.write(16);
+    Roomba.write(62);
+    Roomba.write(8);
+    Roomba.write(65);
+    Roomba.write(8);
+    Roomba.write(67);
+    Roomba.write(8);
+
+    Roomba.write(58);
+    Roomba.write(8);
+    Roomba.write(58);
+    Roomba.write(8);
+    Roomba.write(74);
+    Roomba.write(16);
+    Roomba.write(69)
+    Roomba.write(24);
+    Roomba.write(68);
+    Roomba.write(16);
+    Roomba.write(67);
+    Roomba.write(16);
+    Roomba.write(65);
+    Roomba.write(16);
+    Roomba.write(62);
+    Roomba.write(8);
+    Roomba.write(65);
+    Roomba.write(8);
+    Roomba.write(67);
+    Roomba.write(8);
+
+}
+
 //C Major chord
 void playCMajor() {
     Roomba.write(141);
@@ -198,6 +291,19 @@ void playTheLick() {
     Roomba.write(141);
     Roomba.write(2);
 }
+
+void playMeglovania() {
+    Roomba.write(141);
+    Roomba.write(3);
+}
+
+
+
+
+
+
+
+
 
 
 
