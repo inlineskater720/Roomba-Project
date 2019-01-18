@@ -18,7 +18,7 @@ SoftwareSerial Roomba(rxPin,txPin);
 //SETUP
 void setup() {
 
- //115200 BAUD RATE
+ //115200 for roomba, 9600 for bluetooth
  Serial.begin(9600);
  Roomba.begin(115200);  
  Serial.println("Bluetooth ready");
@@ -29,9 +29,10 @@ void setup() {
  delay (1000);
  Roomba.write(131);  // SAFE MODE
  delay(150);
- Serial.println("\n");
+ Serial.println("");
  delay (2000);
- // -- playsound? -- //
+ 
+ //set songs//
  setTheLick();
  setSongOne();
  setMeglovania();
@@ -40,10 +41,6 @@ void setup() {
 
 //LOOP
 void loop() {
-
-
-    //test();
-
     //if input, set data to input.
     while(Serial.available()>0) {
         data = Serial.read();
@@ -90,22 +87,10 @@ void loop() {
 
 
 void goForward() {
- /*
- Roomba.write(137);   // DRIVE
- Roomba.write((byte)0x00);   // 0x00c8 == 200
- Roomba.write(0xc8);
- Roomba.write(0x80);
- Roomba.write((byte)0x00);
- */
 driveWheels(speed,speed);
 }
 
 void goBackward() {
- /*Roomba.write(137);   // DRIVE
- Roomba.write(0xff);   // 0xff38 == -200
- Roomba.write(0x38);
- Roomba.write(0x80);
- Roomba.write((byte)0x00); */
  driveWheels(-speed,-speed);
 }
 

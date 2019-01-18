@@ -1,13 +1,15 @@
-unsigned float data = 0.0f;
+float data = 0.0f;
 
 void setup() {
-  Serial.being(9600);
+  Serial.begin(9600);
+  Serial.println("Bluetooth ready");
 }
 
 void loop() {
-  if(Serial.available()) {
+  while(Serial.available()>0) {
     data = Serial.read();
     Serial.println(data);
   }
 }
+
 
