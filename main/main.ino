@@ -326,16 +326,6 @@ void playMeglovania() {
     Roomba.write(3);
 }
 
-
-
-
-
-
-
-
-
-
-
 void clean() {
   Roomba.write(135);
   Serial.println("Cleaning opcode sent");
