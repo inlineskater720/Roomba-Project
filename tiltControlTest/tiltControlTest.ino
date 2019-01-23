@@ -83,6 +83,15 @@ SensorValue getSensorXYZValue(String sensorVal) {
 
 */
 
+
+
+
+
+
+
+
+
+
 #include <SoftwareSerial.h>
 #include "structs.h"
 
@@ -114,6 +123,10 @@ void loop() {
 
     delay(100);
 }
+
+
+////////////////////////////////////////
+
 
 String getBluetoothMessage() {
     String input = "";
@@ -159,16 +172,3 @@ SensorValue getSensorXYZValue(String sensorVal) {
     //Serial.println(sensorVal);
     return sensorval;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

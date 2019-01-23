@@ -1,4 +1,7 @@
 #include <SoftwareSerial.h>
+#include "structs.h"
+
+#define tiltAmount 3;
 
 //Constrains a value between min & max
 #define clamp(value, min, max) (value < min ? min : value > max ? max : value)
@@ -10,7 +13,6 @@ int txPin = 11;
 int speed = 400;
 
 //bluetooth input
-char data;
 
 //Roomba object
 SoftwareSerial Roomba(rxPin,txPin);
@@ -41,42 +43,84 @@ void setup() {
 
 //LOOP
 void loop() {
-    //if input, set data to input.
+
+    /*
     while(Serial.available()>0) {
         data = Serial.read();
         Serial.println(data);
     }
-    
-    //decide what to do with data.
-    if(data == 'w') {
-        goForward();
-    }
-    if(data == 's') {
-        goBackward();
-    }
-    if(data == 'a') {
-        turnLeft();
-    }
-    if(data == 'd') {
-        turnRight();
-    }
-    if(data == ' ') {
-        halt();
-    }
-    if(data == 'x') {
-        clean();
-    }
-    if(data == 'v') {
-      fullMode();
-    }
-    if(data == 't') {
-      playMeglovania();
-    }
-    if(data == 'q') {
-      playTheLick();
-    }
-    
-    data=0;
+    */
+
+   String data = getBluetoothMessage();
+
+   Serial.println(data);
+   
+   
+   if(data.startsWith("X")) {
+        SensorValue vals = getSensorXYZValue(data);
+        float x = vals.x;
+        float y = vals.y;
+        float z = vals.z;
+
+        if(x < -3) {
+          goForward();
+        }
+        if(x > 3) {
+          goBackward();
+        }
+        if(y > 3) {
+          turnRight();
+        }
+        if(y < -3) {
+          turnLeft(); 
+        }
+        if(x>-3 && x<3) {
+          // everything less than 3'
+          halt();
+        }
+        
+        /*String output = "X:  ";
+        output +=vals.x;
+        output +="   Y: ";
+        output +=vals.y;
+        output +="   Z: ";
+        output += vals.z;
+        Serial.println(output); */
+   } else {
+        Serial.println(data);
+        //decide what to do with data.
+        if(data == "w") {
+            goForward();
+        }
+        if(data == "s") {
+            goBackward();
+        }
+        if(data == "a") {
+            turnLeft();
+        }
+        if(data == "d") {
+            turnRight();
+        }
+        if(data == " ") {
+            halt();
+        }
+        if(data == "x") {
+            clean();
+        }
+        if(data == "v") {
+        fullMode();
+        }
+        if(data == "t") {
+        playMeglovania();
+        }
+        if(data == "q") {
+        playTheLick();
+        }
+        
+
+   }
+
+   delay(100);
     
 }
 
@@ -185,7 +229,7 @@ void setMeglovania() {
     Roomba.write(8);
     Roomba.write(74);
     Roomba.write(16);
-    Roomba.write(69)
+    Roomba.write(69);
     Roomba.write(24);
     Roomba.write(68);
     Roomba.write(16);
@@ -206,7 +250,7 @@ void setMeglovania() {
     Roomba.write(8);
     Roomba.write(74);
     Roomba.write(16);
-    Roomba.write(69)
+    Roomba.write(69);
     Roomba.write(24);
     Roomba.write(68);
     Roomba.write(16);
@@ -227,7 +271,7 @@ void setMeglovania() {
     Roomba.write(8);
     Roomba.write(74);
     Roomba.write(16);
-    Roomba.write(69)
+    Roomba.write(69);
     Roomba.write(24);
     Roomba.write(68);
     Roomba.write(16);
@@ -248,7 +292,7 @@ void setMeglovania() {
     Roomba.write(8);
     Roomba.write(74);
     Roomba.write(16);
-    Roomba.write(69)
+    Roomba.write(69);
     Roomba.write(24);
     Roomba.write(68);
     Roomba.write(16);
@@ -300,4 +344,49 @@ void clean() {
 void fullMode() {
   Roomba.write(131);
 }
+
+
+String getBluetoothMessage() {
+    String input = "";
+    if (!Serial.available()) {
+        return "";
+    }
+    while (Serial.available()) {
+        input += (char) Serial.read();
+        if (!Serial.available()) delayMicroseconds(50); //  Delay for messages longer than 1 character
+    }
+   // Serial.println(input);
+    int rear = input.lastIndexOf("#");
+    if (rear < 0) {
+        return "";
+    }
+
+    input = input.substring(0, rear);
+    int front = input.lastIndexOf("*");
+    if (front < 0) {
+        return "";
+    } else {
+        input = input.substring(front + 1);
+    }
+    return input;
+}
+
+SensorValue getSensorXYZValue(String sensorVal) {
+    SensorValue sensorval;
+    int index_x = sensorVal.indexOf("X:");
+    int index_y = sensorVal.indexOf("Y:");
+    int index_z = sensorVal.indexOf("Z:");
+    if (index_x < 0 || index_y < 0 || index_z < 0) { // missing data
+        sensorval.x = -100;
+        sensorval.y = -100;
+        sensorval.z = -100;
+    } else {
+        sensorval.x = sensorVal.substring(index_x + 2, index_y).toFloat();
+        sensorval.y = sensorVal.substring(index_y + 2, index_z).toFloat();
+        sensorval.z = sensorVal.substring(index_z + 2).toFloat();
+    }
+    //Serial.println(sensorVal);
+    return sensorval;
+}
+
 
